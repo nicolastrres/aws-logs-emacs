@@ -48,12 +48,22 @@
   "Settings for `aws-logs'."
   :link '(url-link "https://github.com/nicolastrres/aws-logs-emacs"))
 
+(defcustom aws-logs-command "awslogs"
+  "The 'aws-logs' command."
+  :type 'string
+  :group 'aws-logs)
 
-(defun get-logs ()
+(defcustom aws-logs-args '()
+  "List of args to send to aws-logs command."
+  :type '(repeat string)
+  :group 'aws-logs)
+
+(defun aws-logs ()
+  "Get AWS logs"
   (interactive)
-  (call-process "awslogs" nil "AWS LOGS" nil "get" "/aws/lambda/toggler-dev-notifyUser" "ALL" "-s1d" "--aws-region" "us-east-1"))
-
-
+  (apply 'call-process
+                    aws-logs-command nil "AWS LOGS"
+                    nil (append (list "get") aws-logs-args)))
 
 (provide 'aws-logs)
 
